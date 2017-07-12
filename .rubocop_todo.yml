@@ -31,7 +31,7 @@ Style/Documentation:
 
 # Offense count: 3
 # Cop supports --auto-correct.
-Style/EmptyLines:
+Layout/EmptyLines:
   Exclude:
     - 'Gemfile'
     - 'config/environments/development.rb'
@@ -41,7 +41,7 @@ Style/EmptyLines:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: empty_lines, no_empty_lines
-Style/EmptyLinesAroundBlockBody:
+Layout/EmptyLinesAroundBlockBody:
   Exclude:
     - 'db/schema.rb'
 
@@ -54,7 +54,7 @@ Style/FrozenStringLiteralComment:
 
 # Offense count: 2
 # Cop supports --auto-correct.
-Style/SpaceInsideBrackets:
+Layout/SpaceInsideBrackets:
   Exclude:
     - 'config/environments/production.rb'
 
