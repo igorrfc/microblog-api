@@ -3,6 +3,11 @@ require 'rails_helper'
 describe User, type: :model do
   subject { create(:user) }
 
+  describe 'associaions' do
+    it { is_expected.to have_many(:followers).through(:follower_follows) }
+    it { is_expected.to have_many(:followees).through(:followee_follows) }
+  end
+
   describe 'validations' do
     describe 'presence validations' do
       it { is_expected.to validate_presence_of(:name) }
