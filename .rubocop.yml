@@ -17,7 +17,12 @@ AllCops:
     - spec/factories/**/*
     - Gemfile
 
-  # Customize rules
-  Metrics:
-    BlockLength:
-      Max: 90
+Metrics/BlockLength:
+  Max: 90
+  Exclude:
+    - "**/*_spec.rb"
+Metrics/ModuleLength:
+  Exclude:
+    - "**/*_spec.rb"
+Metrics/EndOfLine:
+  Enabled: false

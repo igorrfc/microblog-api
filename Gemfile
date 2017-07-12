@@ -16,6 +16,8 @@ gem 'puma', '~> 3.0'
 
 gem 'swagger-blocks'
 
+gem 'bcrypt-ruby'
+
 group :development, :test do
   gem 'pry'
   gem 'pry-rails'
