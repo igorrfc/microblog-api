@@ -3,7 +3,6 @@ module Docs
     extend ActiveSupport::Concern
 
     included do
-
       swagger_schema :UserInput do
         allOf do
           schema do
@@ -27,7 +26,7 @@ module Docs
           end
         end
       end
-      swagger_path '/users' do
+      swagger_path '/api/users' do
         operation :post do
           key :description, 'Registers a new user'
           key :operation_id, 'createUser'
@@ -49,9 +48,6 @@ module Docs
 
           response 201 do
             key :description, 'user created response'
-            schema do
-              key :'$ref', :Response
-            end
           end
         end
       end
