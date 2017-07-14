@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 describe SessionsController, type: :controller do
+  describe 'GET #new' do
+    it 'returns a user not authenticated message' do
+      get :new
+      expect(hash_format_response[:message]).to eq 'You are not authenticated'
+    end
+  end
+
   describe 'POST #create' do
     let(:email) { 'foo@bar.com' }
 

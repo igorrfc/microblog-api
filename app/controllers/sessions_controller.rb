@@ -3,6 +3,10 @@ class SessionsController < ApplicationController
   include Swagger::Blocks
   include Docs::SessionsController
 
+  def new
+    render json: { message: 'You are not authenticated' }
+  end
+
   def create
     user = User.find_by(email: params[:email])
 
