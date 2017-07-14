@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_secure_password
 
   has_many :posts
+  has_many :notifications
 
   has_many :followers, through: :follower_follows, source: :follower
   has_many :follower_follows, foreign_key: :followee_id, class_name: 'Follow'

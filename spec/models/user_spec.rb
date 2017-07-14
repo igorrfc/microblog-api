@@ -5,6 +5,7 @@ describe User, type: :model do
 
   describe 'associaions' do
     it { is_expected.to have_many(:posts) }
+    it { is_expected.to have_many(:notifications) }
     it { is_expected.to have_many(:followers).through(:follower_follows) }
     it { is_expected.to have_many(:followees).through(:followee_follows) }
   end
