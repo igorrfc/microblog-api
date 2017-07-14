@@ -1,6 +1,30 @@
 require 'rails_helper'
 
 describe Api::V1::UsersController, type: :controller do
+  describe 'GET #show' do
+    context 'when there is an user with the received id param' do
+      let!(:user) { create(:user, name: 'Scott') }
+      let(:user_found) { hash_format_response[:data] }
+
+      before { get :show, params: { id: user.id } }
+
+      it 'returns the user' do
+        expect(user_found[:name]).to eq 'Scott'
+      end
+
+      it 'returns an user json without the "passowrd_digest information"' do
+        expect(user_found).to_not have_key :password_digest
+      end
+    end
+
+    context 'when the user does not exist' do
+      it 'returns a not found http status' do
+        get :show, params: { id: 1 }
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
   describe 'POST #create' do
     context 'when all the user parameters are valid' do
       let(:user_params) { attributes_for(:user) }

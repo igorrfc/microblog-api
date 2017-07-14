@@ -5,6 +5,18 @@ module Api
       include Swagger::Blocks
       include Docs::UsersController
 
+      def show
+        user = User.find_by(id: params[:id])
+
+        if user
+          render json: {
+            data: user.as_json(except: :password_digest, include: %i[posts followers followees])
+          }, status: :ok
+        else
+          head :not_found
+        end
+      end
+
       def create
         user = User.new(user_params)
 

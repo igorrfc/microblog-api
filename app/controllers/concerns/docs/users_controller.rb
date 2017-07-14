@@ -27,6 +27,21 @@ module Docs
         end
       end
       swagger_path '/api/users' do
+        operation :get do
+          key :description, 'Looks for an user'
+          key :operation_id, 'getUser'
+          key :tags, [
+            'user'
+          ]
+          parameter do
+            key :name, :id
+            key :in, :query
+            key :description, 'User id'
+            key :type, :integer
+            key :required, true
+          end
+        end
+
         operation :post do
           key :description, 'Registers a new user'
           key :operation_id, 'createUser'
