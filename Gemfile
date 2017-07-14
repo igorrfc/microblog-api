@@ -18,6 +18,8 @@ gem 'swagger-blocks'
 
 gem 'bcrypt-ruby'
 
+gem 'doorkeeper'
+
 group :development, :test do
   gem 'pry'
   gem 'pry-rails'
