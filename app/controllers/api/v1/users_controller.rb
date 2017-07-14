@@ -5,6 +5,8 @@ module Api
       include Swagger::Blocks
       include Docs::UsersController
 
+      before_action :doorkeeper_authorize!, only: :search
+
       def show
         user = User.find_by(id: params[:id])
 
@@ -26,6 +28,10 @@ module Api
         else
           render json: { errors: user.errors }, status: :unprocessable_entity
         end
+      end
+
+      def search
+        render json: { data: User.search(params[:query]).as_json(except: :password_digest) }, status: :ok
       end
 
       private

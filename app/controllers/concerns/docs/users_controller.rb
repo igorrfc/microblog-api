@@ -66,6 +66,26 @@ module Docs
           end
         end
       end
+
+      swagger_path 'api/users/search' do
+        operation :get do
+          key :description, 'Search users by name, nickname or email'
+          key :operation_id, 'searchUser'
+          key :tags, [
+            'user'
+          ]
+          parameter do
+            key :name, :query
+            key :in, :query
+            key :description, 'It can be a name, username or email'
+            key :type, :string
+            key :required, true
+          end
+          security do
+            key :api_auth, ['api']
+          end
+        end
+      end
     end
   end
 end

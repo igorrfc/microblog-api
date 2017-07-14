@@ -55,4 +55,47 @@ describe Api::V1::UsersController, type: :controller do
       end
     end
   end
+
+  describe 'GET #search' do
+    context 'when the is a logged user' do
+      include_context 'user authenticated'
+
+      before { create_list(:user, 2, name: 'Not matched', nickname: 'notmatched') }
+
+      it 'returns a "success" http status' do
+        get :search
+        expect(response).to have_http_status(:ok)
+      end
+
+      context 'when there is some user matching the query param' do
+        let!(:matched_user) { create(:user, name: 'Bruce Wayne') }
+
+        before { get :search, params: { query: 'bruce' } }
+
+        it 'returns the matched user' do
+          matched_user_hasherized = JSON.parse(matched_user.to_json(except: :password_digest))
+          expect(hash_format_response[:data]).to contain_exactly matched_user_hasherized
+        end
+
+        it 'returns the users without the "password_digest" attribute' do
+          expect(hash_format_response[:data].map { |user| user[:password_digest] }.compact)
+            .to be_empty
+        end
+      end
+
+      context 'when there is no users matching the query param' do
+        it 'returns an empty list' do
+          get :search, params: { query: 'bruce' }
+          expect(hash_format_response[:data]).to be_empty
+        end
+      end
+    end
+
+    context 'when the is no user logged in' do
+      it 'responds with the unauthorized http status' do
+        get :search
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
 end
