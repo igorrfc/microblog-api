@@ -1,5 +1,7 @@
 # User - represents an user
 class User < ApplicationRecord
+  include PgSearch
+
   has_secure_password
 
   has_many :posts
@@ -13,4 +15,10 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :nickname, presence: true
   validates :email, uniqueness: true, presence: true, format: { with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i }
+
+  pg_search_scope :search, using: { tsearch: { prefix: true } }, against: {
+    name: 'A',
+    nickname: 'B',
+    email: 'C'
+  }
 end
