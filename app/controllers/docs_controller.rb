@@ -27,7 +27,12 @@ class DocsController < ApplicationController
     key :basePath, '/'
   end
 
-  SWAGGERED_CLASSES = [Api::V1::UsersController, SessionsController, self].freeze
+  SWAGGERED_CLASSES = [
+    Api::V1::UsersController,
+    Api::V1::PostsController,
+    SessionsController,
+    self
+  ].freeze
 
   def index
     render json: Swagger::Blocks.build_root_json(SWAGGERED_CLASSES)
