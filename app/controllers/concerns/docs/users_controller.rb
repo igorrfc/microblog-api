@@ -84,6 +84,35 @@ module Docs
           security do
             key :api_auth, ['api']
           end
+          response 200 do
+            key :description, 'search finishes'
+          end
+        end
+      end
+
+      swagger_path 'api/users/follow' do
+        operation :get do
+          key :description, 'Search users by name, nickname or email'
+          key :operation_id, 'searchUser'
+          key :tags, [
+            'user'
+          ]
+          parameter do
+            key :name, :id
+            key :in, :body
+            key :description, 'the id of the user that will be followed'
+            key :type, :integer
+            key :required, true
+          end
+          security do
+            key :api_auth, ['api']
+          end
+          response 200 do
+            key :description, 'user successfully followed response'
+          end
+          response 404 do
+            key :description, 'user not found'
+          end
         end
       end
     end

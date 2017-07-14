@@ -12,7 +12,7 @@ describe Api::V1::UsersController, type: :controller do
         expect(user_found[:name]).to eq 'Scott'
       end
 
-      it 'returns an user json without the "passowrd_digest information"' do
+      it 'returns an user json without the "password_digest information"' do
         expect(user_found).to_not have_key :password_digest
       end
     end
@@ -57,7 +57,7 @@ describe Api::V1::UsersController, type: :controller do
   end
 
   describe 'GET #search' do
-    context 'when the is a logged user' do
+    context 'when there is a logged user' do
       include_context 'user authenticated'
 
       before { create_list(:user, 2, name: 'Not matched', nickname: 'notmatched') }
@@ -91,9 +91,38 @@ describe Api::V1::UsersController, type: :controller do
       end
     end
 
-    context 'when the is no user logged in' do
+    context 'when there is no user logged in' do
       it 'responds with the unauthorized http status' do
         get :search
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
+  describe 'POST #follow' do
+    context 'when there is a logged user' do
+      include_context 'user authenticated'
+
+      context 'when an user id is received on params' do
+        it 'returns a "success" http status' do
+          allow(FollowUser).to receive(:process)
+          post :follow, params: { id: create(:user).id }
+
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context 'when no user id is received on params' do
+        it 'returns a "not_found" http status' do
+          post :follow
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+
+    context 'when there is no user logged in' do
+      it 'responds with the unauthorized http status' do
+        post :follow
         expect(response).to have_http_status(:unauthorized)
       end
     end

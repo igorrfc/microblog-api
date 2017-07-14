@@ -6,7 +6,7 @@ module Docs
       swagger_schema :PostInput do
         allOf do
           schema do
-            key :'$ref', :UserFields
+            key :'$ref', :PostFields
           end
 
           schema do

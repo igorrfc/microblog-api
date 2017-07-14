@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       resource :users, only: %i[create show] do
         member do
           get :search
+          post :follow
         end
       end
       resource :posts, only: %i[index create]

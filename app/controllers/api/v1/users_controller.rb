@@ -5,7 +5,7 @@ module Api
       include Swagger::Blocks
       include Docs::UsersController
 
-      before_action :doorkeeper_authorize!, only: :search
+      before_action :doorkeeper_authorize!, only: %i[search follow]
 
       def show
         user = User.find_by(id: params[:id])
@@ -32,6 +32,15 @@ module Api
 
       def search
         render json: { data: User.search(params[:query]).as_json(except: :password_digest) }, status: :ok
+      end
+
+      def follow
+        return head :not_found unless params[:id]
+
+        user = User.find(params[:id])
+        FollowUser.process(user, follower: current_user)
+
+        head :ok
       end
 
       private
