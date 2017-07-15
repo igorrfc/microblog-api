@@ -28,6 +28,18 @@ module Docs
       end
 
       swagger_path '/api/users' do
+        operation :get do
+          key :description, 'Returns at least 10 users randomly'
+          key :operation_id, 'listUsers'
+          key :tags, [
+            'user'
+          ]
+
+          response 200 do
+            key :description, 'success on fetch users'
+          end
+        end
+
         operation :post do
           key :description, 'Registers a new user'
           key :operation_id, 'createUser'

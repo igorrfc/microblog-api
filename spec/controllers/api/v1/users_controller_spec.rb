@@ -1,6 +1,34 @@
 require 'rails_helper'
 
 describe Api::V1::UsersController, type: :controller do
+  describe 'GET #index' do
+    context 'when there is a logged user' do
+      include_context 'user authenticated'
+      let!(:users_list) { JSON.parse(create_list(:user, 2).to_json).sort_by { |hsh| hsh[:id] } }
+
+      it 'returns at least 10 followees suggestions' do
+        get :index
+
+        ordered_users = hash_format_response[:data].sort_by { |user| user[:id] }.delete_if do |user|
+          user[:id] == current_user.id
+        end
+
+        expect(ordered_users).to eq users_list
+      end
+
+      it 'returns a "success" http status' do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'when there is no user logged in' do
+      it 'responds with the unauthorized http status' do
+        get :index
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
   describe 'GET #show' do
     context 'when there is an user with the received id param' do
       let!(:user) { create(:user, name: 'Scott') }

@@ -22,4 +22,6 @@ class User < ApplicationRecord
     nickname: 'B',
     email: 'C'
   }
+
+  scope :followees_suggestion, -> { order('RANDOM()').limit(10) }
 end
