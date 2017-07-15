@@ -8,7 +8,8 @@ module Api
       before_action :doorkeeper_authorize!, only: %i[search follow index]
 
       def index
-        render json: { data: User.followees_suggestion }, status: :ok
+        users = User.followees_suggestion
+        render json: { data: UserSerializer.serialize(users) }, status: :ok
       end
 
       def show
@@ -16,7 +17,7 @@ module Api
 
         if user
           render json: {
-            data: user.as_json(except: :password_digest, include: %i[posts followers followees])
+            data: UserSerializer.serialize(user)
           }, status: :ok
         else
           head :not_found
@@ -28,14 +29,15 @@ module Api
 
         if user.save
           session[:user_id] = user.id
-          render json: { data: user }, status: :created
+          render json: { data: user.as_json(except: :password_digest) }, status: :created
         else
           render json: { errors: user.errors }, status: :unprocessable_entity
         end
       end
 
       def search
-        render json: { data: User.search(params[:query]).as_json(except: :password_digest) }, status: :ok
+        users = User.search(params[:query])
+        render json: { data: UserSerializer.serialize(users) }, status: :ok
       end
 
       def follow
