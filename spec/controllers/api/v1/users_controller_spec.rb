@@ -4,16 +4,19 @@ describe Api::V1::UsersController, type: :controller do
   describe 'GET #index' do
     context 'when there is a logged user' do
       include_context 'user authenticated'
-      let!(:users_list) { JSON.parse(create_list(:user, 2).to_json).sort_by { |hsh| hsh[:id] } }
+      let!(:users_list) { create_list(:user, 2) }
 
       it 'returns at least 10 followees suggestions' do
         get :index
 
-        ordered_users = hash_format_response[:data].sort_by { |user| user[:id] }.delete_if do |user|
+        response_users = hash_format_response[:data].delete_if do |user|
           user[:id] == current_user.id
         end
 
-        expect(ordered_users).to eq users_list
+        user_names = users_list.map(&:name).sort
+        response_user_names = response_users.map { |user| user[:name] }.sort
+
+        expect(response_user_names).to eq user_names
       end
 
       it 'returns a "success" http status' do
@@ -101,8 +104,8 @@ describe Api::V1::UsersController, type: :controller do
         before { get :search, params: { query: 'bruce' } }
 
         it 'returns the matched user' do
-          matched_user_hasherized = JSON.parse(matched_user.to_json(except: :password_digest))
-          expect(hash_format_response[:data]).to contain_exactly matched_user_hasherized
+          expect(hash_format_response[:data].size).to eq 1
+          expect(hash_format_response[:data].first[:name]).to eq 'Bruce Wayne'
         end
 
         it 'returns the users without the "password_digest" attribute' do
