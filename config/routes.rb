@@ -9,12 +9,12 @@ Rails.application.routes.draw do
     scope module: :v1 do
       resources :users, only: %i[create show] do
         resources :notifications, only: %i[update index]
+        resources :posts, only: %i[index create]
         collection do
           get :search
           post :follow
         end
       end
-      resources :posts, only: %i[index create]
     end
   end
 end

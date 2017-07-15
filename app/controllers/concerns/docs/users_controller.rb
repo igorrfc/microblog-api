@@ -26,28 +26,15 @@ module Docs
           end
         end
       end
-      swagger_path '/api/users' do
-        operation :get do
-          key :description, 'Looks for an user'
-          key :operation_id, 'getUser'
-          key :tags, [
-            'user'
-          ]
-          parameter do
-            key :name, :id
-            key :in, :query
-            key :description, 'User id'
-            key :type, :integer
-            key :required, true
-          end
-        end
 
+      swagger_path '/api/users' do
         operation :post do
           key :description, 'Registers a new user'
           key :operation_id, 'createUser'
           key :tags, [
             'user'
           ]
+
           parameter do
             key :name, :user
             key :in, :body
@@ -64,6 +51,36 @@ module Docs
           response 201 do
             key :description, 'user created response'
           end
+
+          response 422 do
+            key :description, 'invalid parameters sent'
+          end
+        end
+      end
+
+      swagger_path '/api/users/{:id}' do
+        operation :get do
+          key :description, 'Looks for an user'
+          key :operation_id, 'getUser'
+          key :tags, [
+            'user'
+          ]
+
+          parameter do
+            key :name, :id
+            key :in, :path
+            key :description, 'User id'
+            key :type, :integer
+            key :required, true
+          end
+
+          response 200 do
+            key :description, 'user found'
+          end
+
+          response 404 do
+            key :description, 'user not found'
+          end
         end
       end
 
@@ -74,6 +91,7 @@ module Docs
           key :tags, [
             'user'
           ]
+
           parameter do
             key :name, :query
             key :in, :query
@@ -81,9 +99,11 @@ module Docs
             key :type, :string
             key :required, true
           end
+
           security do
             key :api_auth, ['api']
           end
+
           response 200 do
             key :description, 'search finishes'
           end
@@ -97,6 +117,7 @@ module Docs
           key :tags, [
             'user'
           ]
+
           parameter do
             key :name, :id
             key :in, :body
@@ -104,12 +125,15 @@ module Docs
             key :type, :integer
             key :required, true
           end
+
           security do
             key :api_auth, ['api']
           end
+
           response 200 do
             key :description, 'user successfully followed response'
           end
+
           response 404 do
             key :description, 'user not found'
           end
