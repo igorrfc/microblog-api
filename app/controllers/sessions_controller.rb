@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
 
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      head :ok
+      render json: { data: { user: UserSerializer.serialize(user) } }, status: :ok
     else
       render json: {
         errors: { authentication: ['You have entered incorrect email and/or password'] }

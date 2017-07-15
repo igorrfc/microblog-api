@@ -13,9 +13,13 @@ describe SessionsController, type: :controller do
 
     context 'when there is an user matching the email received and with the correct password' do
       let(:password) { 'foopassword' }
-      let!(:user) { create(:user, email: email, password: password, password_confirmation: password) }
+      let!(:user) { create(:user, name: 'Steve', email: email, password: password, password_confirmation: password) }
 
       before { post :create, params: { email: email, password: password } }
+
+      it 'returns the logged user' do
+        expect(hash_format_response[:data][:user][:name]).to eq 'Steve'
+      end
 
       it 'returns a "success" http response' do
         expect(response).to have_http_status(:ok)
