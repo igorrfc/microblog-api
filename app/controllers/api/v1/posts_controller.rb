@@ -7,7 +7,9 @@ module Api
       before_action :doorkeeper_authorize!
 
       def index
-        render json: { data: Post.where(user_id: params[:user_id]) }, status: :ok
+        render json: {
+          data: Post.where(user_id: params[:user_id]).order(created_at: :desc)
+        }, status: :ok
       end
 
       def create

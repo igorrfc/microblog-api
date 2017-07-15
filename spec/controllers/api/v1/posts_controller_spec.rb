@@ -5,13 +5,16 @@ describe Api::V1::PostsController, type: :controller do
     context 'when there is a logged user' do
       include_context 'user authenticated'
       let(:user) { create(:user) }
-      let!(:user_posts) { JSON.parse(create_list(:post, 2, user: user).to_json) }
 
       before { create_list(:post, 2) }
 
-      it 'returns all the user posts' do
+      it 'returns all the user posts ordered by descending date' do
+        first_post = JSON.parse(create(:post, user: user).to_json)
+        second_post = JSON.parse(create(:post, user: user).to_json)
+
         get :index, params: { user_id: user.id }
-        expect(hash_format_response[:data]).to eq user_posts
+
+        expect(hash_format_response[:data]).to contain_exactly second_post, first_post
       end
 
       it 'returns a "success" http status' do

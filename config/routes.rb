@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   use_doorkeeper
+  root 'welcome#index'
   resources :docs, only: [:index]
 
   resources :sessions, only: %i[new create]
