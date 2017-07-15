@@ -21,6 +21,18 @@ class DocsController < ApplicationController
       key :name, 'user'
       key :description, 'Users operations'
     end
+    tag do
+      key :name, 'post'
+      key :description, 'Posts operations'
+    end
+    tag do
+      key :name, 'notification'
+      key :description, 'Notification operations'
+    end
+    tag do
+      key :name, 'session'
+      key :description, 'Session management'
+    end
     key :schemes, %w[http]
     key :consumes, ['application/json']
     key :produces, ['application/json']
@@ -30,6 +42,7 @@ class DocsController < ApplicationController
   SWAGGERED_CLASSES = [
     Api::V1::UsersController,
     Api::V1::PostsController,
+    Api::V1::NotificationsController,
     SessionsController,
     self
   ].freeze
