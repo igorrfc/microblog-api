@@ -5,7 +5,11 @@ module Api
       include Swagger::Blocks
       include Docs::UsersController
 
-      before_action :doorkeeper_authorize!, only: %i[search follow]
+      before_action :doorkeeper_authorize!, only: %i[search follow index]
+
+      def index
+        render json: { data: User.followees_suggestion }, status: :ok
+      end
 
       def show
         user = User.find_by(id: params[:id])
