@@ -20,13 +20,46 @@ module Docs
           end
         end
       end
-      swagger_path '/api/posts' do
+
+      swagger_path '/api/users/{:user_id}/posts' do
+        operation :get do
+          key :description, "Fetches for all user's posts"
+          key :operation_id, 'fetchPosts'
+          key :tags, [
+            'post'
+          ]
+
+          parameter do
+            key :name, :user_id
+            key :in, :path
+            key :description, "The id of posts creator"
+            key :required, true
+          end
+
+          security do
+            key :api_auth, ['api']
+          end
+
+          response 200 do
+            key :description, 'success on fetch user posts'
+          end
+        end
+      end
+
+      swagger_path '/api/users/{:user_id}/posts' do
         operation :post do
           key :description, 'Registers a new post'
           key :operation_id, 'createPost'
           key :tags, [
             'post'
           ]
+
+          parameter do
+            key :name, :user_id
+            key :in, :path
+            key :description, "The id of post's creator"
+            key :required, true
+          end
 
           parameter do
             key :name, :post
@@ -47,6 +80,10 @@ module Docs
 
           response 201 do
             key :description, 'post created response'
+          end
+
+          response 422 do
+            key :description, 'invalid parameters sent'
           end
         end
       end
