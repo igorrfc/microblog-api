@@ -15,6 +15,7 @@ describe Api::V1::NotificationsController, type: :controller do
       end
 
       it 'returns a "success" http status' do
+        get :index, params: { user_id: user.id }
         expect(response).to have_http_status(:ok)
       end
     end
