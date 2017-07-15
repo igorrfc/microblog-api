@@ -8,7 +8,7 @@ module Api
       before_action :doorkeeper_authorize!
 
       def index
-        render json: { data: Notification.where(user_id: params[:user_id]) }
+        render json: { data: Notification.where(user_id: params[:user_id]) }, status: :ok
       end
 
       def update

@@ -13,11 +13,15 @@ describe Api::V1::NotificationsController, type: :controller do
         get :index, params: { user_id: user.id }
         expect(hash_format_response[:data]).to eq user_notifications
       end
+
+      it 'returns a "success" http status' do
+        expect(response).to have_http_status(:ok)
+      end
     end
 
     context 'when there is no user logged in' do
       it 'responds with the unauthorized http status' do
-        put :update, params: { user_id: 1, id: 1 }
+        get :index, params: { user_id: 1, id: 1 }
         expect(response).to have_http_status(:unauthorized)
       end
     end
