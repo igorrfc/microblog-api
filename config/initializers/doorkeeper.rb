@@ -7,6 +7,11 @@ Doorkeeper.configure do
     User.find_by_id(session[:user_id]) || redirect_to(new_session_url)
   end
 
+  resource_owner_from_credentials do
+    u = User.find_by(email: params[:username])
+    u if u.authenticate(params[:password])
+  end
+
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
   # admin_authenticator do
   #   # Put your admin authentication logic here.
@@ -95,7 +100,9 @@ Doorkeeper.configure do
   #   http://tools.ietf.org/html/rfc6819#section-4.4.2
   #   http://tools.ietf.org/html/rfc6819#section-4.4.3
   #
-  # grant_flows %w(authorization_code client_credentials)
+  grant_flows %w(authorization_code client_credentials password)
+
+  access_token_expires_in 24.hours
 
   # Under some circumstances you might want to have applications auto-approved,
   # so that the user skips the authorization step.
