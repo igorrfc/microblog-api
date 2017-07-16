@@ -131,13 +131,15 @@ describe Api::V1::UsersController, type: :controller do
   end
 
   describe 'POST #follow' do
+    let(:user) { create(:user) }
+
     context 'when there is a logged user' do
       include_context 'user authenticated'
 
       context 'when an user id is received on params' do
         it 'returns a "success" http status' do
           allow(FollowUser).to receive(:process)
-          post :follow, params: { id: create(:user).id }
+          post :follow, params: { id: user.id, follower_id: create(:user).id }
 
           expect(response).to have_http_status(:ok)
         end
@@ -145,7 +147,7 @@ describe Api::V1::UsersController, type: :controller do
 
       context 'when no user id is received on params' do
         it 'returns a "not_found" http status' do
-          post :follow
+          post :follow, params: { id: user.id }
           expect(response).to have_http_status(:not_found)
         end
       end
@@ -153,7 +155,7 @@ describe Api::V1::UsersController, type: :controller do
 
     context 'when there is no user logged in' do
       it 'responds with the unauthorized http status' do
-        post :follow
+        post :follow, params: { id: user.id }
         expect(response).to have_http_status(:unauthorized)
       end
     end

@@ -41,10 +41,11 @@ module Api
       end
 
       def follow
-        return head :not_found unless params[:id]
+        return head :not_found unless params[:follower_id]
 
         user = User.find(params[:id])
-        FollowUser.process(user, follower: current_user)
+        follower = User.find(params[:follower_id])
+        FollowUser.process(user, follower: follower)
 
         head :ok
       end

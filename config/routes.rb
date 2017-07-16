@@ -11,9 +11,11 @@ Rails.application.routes.draw do
       resources :users, only: %i[create show index] do
         resources :notifications, only: %i[update index]
         resources :posts, only: %i[index create]
+        member do
+          post :follow
+        end
         collection do
           get :search
-          post :follow
         end
       end
     end

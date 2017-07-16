@@ -122,10 +122,10 @@ module Docs
         end
       end
 
-      swagger_path 'api/users/follow' do
-        operation :get do
-          key :description, 'Search users by name, nickname or email'
-          key :operation_id, 'searchUser'
+      swagger_path 'api/users/{:id}/follow' do
+        operation :post do
+          key :description, 'Follows an user'
+          key :operation_id, 'followUser'
           key :tags, [
             'user'
           ]
@@ -134,6 +134,14 @@ module Docs
             key :name, :id
             key :in, :body
             key :description, 'the id of the user that will be followed'
+            key :type, :integer
+            key :required, true
+          end
+
+          parameter do
+            key :name, :follower_id
+            key :in, :query
+            key :description, 'the follower id'
             key :type, :integer
             key :required, true
           end
