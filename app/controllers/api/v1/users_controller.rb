@@ -1,6 +1,6 @@
 module Api
   module V1
-    # EstablishmentsController - holds the establishments logic.
+    # UsersController - holds the users logic.
     class UsersController < ApplicationController
       include Swagger::Blocks
       include Docs::UsersController
@@ -8,12 +8,12 @@ module Api
       before_action :doorkeeper_authorize!, only: %i[search follow index]
 
       def index
-        users = User.followees_suggestion
+        users = User.includes(:posts, :followers, :followees, :notifications).followees_suggestion
         render json: { data: UserSerializer.serialize(users) }, status: :ok
       end
 
       def show
-        user = User.find_by(id: params[:id])
+        user = User.includes(:posts, :followers, :followees, :notifications).find_by(id: params[:id])
 
         if user
           render json: {
@@ -36,7 +36,7 @@ module Api
       end
 
       def search
-        users = User.search(params[:query])
+        users = User.includes(:posts, :followers, :followees, :notifications).search(params[:query])
         render json: { data: UserSerializer.serialize(users) }, status: :ok
       end
 
